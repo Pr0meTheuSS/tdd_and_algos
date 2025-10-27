@@ -1,0 +1,8 @@
+----------------------------------------------------------
+Benchmark                Time             CPU   Iterations
+----------------------------------------------------------
+BM_Factorial/10       27.5 ns         27.5 ns     25452997
+BM_Factorial/15       39.1 ns         39.1 ns     17502079
+BM_Factorial/20       52.9 ns         52.8 ns     12417146
+BM_Factorial/30        125 ns          125 ns      5712090
+BM_Factorial/50        294 ns          293 ns      2293247

@@ -15,11 +15,17 @@ endif()
 # --- Dependencies (через Conan или system) ---
 find_package(fmt REQUIRED)
 find_package(GTest REQUIRED)
+find_package(benchmark REQUIRED)
 
 # --- Основное приложение ---
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(${PROJECT_NAME} ${SRC_FILES})
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt benchmark::benchmark_main)
+
+# --- Benchmark ---
+file(GLOB_RECURSE BENCH_FILES benchmarks/*.cpp)
+add_executable(benchmarks ${BENCH_FILES})
+target_link_libraries(benchmarks benchmark::benchmark)
 
 # --- Подключаем тесты ---
 enable_testing()

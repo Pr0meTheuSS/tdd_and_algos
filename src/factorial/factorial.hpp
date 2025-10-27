@@ -12,6 +12,7 @@ unsigned long factorial(unsigned long n) {
     if (n >= ULONG_WIDTH) {
         throw std::overflow_error("factorial param more than nitwidth of returning type, so value may be overfloved");
     }
+
     return (n == 0) ? 1ul : n * factorial(n - 1);
 }
 };  // namespace TddMath
