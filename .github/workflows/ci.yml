@@ -52,7 +52,7 @@ jobs:
       - name: Generate Coverage Report
         run: |
           cd build
-          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch && \
+          lcov --capture --output-file coverage.info --ignore-errors mismatch && \
           lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused && \
           lcov --remove coverage.info '*/conan/*' --output-file coverage.info --ignore-errors unused && \
           lcov --remove coverage.info '*/tests/*' --output-file coverage.info --ignore-errors unused && \
