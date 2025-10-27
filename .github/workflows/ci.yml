@@ -1,0 +1,74 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout код
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Установка Conan и CMake
+      - name: Setup Conan
+        uses: conan-io/setup-conan@v1
+        with:
+          version: "2.10.0"
+
+      - name: Setup CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.31.0'
+
+      # 3. Очистка и установка зависимостей
+      - name: Clean & Conan Install
+        run: |
+          rm -rf build
+          mkdir build
+          cd build
+          conan install .. --build=missing --output-folder=.
+
+      # 4. CMake configure + build
+      - name: CMake Configure & Build
+        run: |
+          cd build
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCODE_COVERAGE=ON
+          cmake --build . --parallel
+
+      # 5. Run Tests
+      - name: Run Tests
+        run: cd build && ctest --output-on-failure
+
+      - name: Install coverage and docs tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov gcovr graphviz
+          sudo apt-get install -y doxygen graphviz
+
+      # 6. Coverage
+      - name: Generate Coverage Report
+        run: |
+          cd build
+          lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/conan/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/tests/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/gtest/*' --output-file coverage.info --ignore-errors unused
+          genhtml coverage.info --output-directory coverage-report
+        continue-on-error: false   # <- теперь на уровне шага
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report/
+
+      # 8. Generate Doxygen
+      - name: Generate Docs
+        run: doxygen Doxyfile
+        continue-on-error: true
+
