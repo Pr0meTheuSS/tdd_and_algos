@@ -17,12 +17,10 @@ jobs:
       - name: Setup Conan
         uses: conan-io/setup-conan@v1
         with:
-          version: 2.10
+          version: "2.10.0"
 
       - name: Install CMake
         uses: lukka/get-cmake@v2
-        with:
-          cmake-version: "3.31.0"
 
       # 3. Очистка и установка зависимостей
       - name: Clean & Conan Install
