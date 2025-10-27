@@ -15,12 +15,12 @@ jobs:
 
       # 2. Установка Conan и CMake
       - name: Setup Conan
-        uses: conan-io/setup-conan@v2
+        uses: conan-io/setup-conan@v1
         with:
           version: latest
 
       - name: Install CMake
-        uses: lukka/get-cmake@v3
+        uses: lukka/get-cmake@v2
         with:
           cmake-version: "3.31.0"
 
@@ -53,12 +53,11 @@ jobs:
           genhtml coverage.info --output-directory coverage-report
         continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
 
-      # 7. Upload coverage artifact (опционально)
-      - name: Upload coverage
-        uses: actions/upload-artifact@v3
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: build/coverage-report
+          path: coverage-report/
 
       # 8. Generate Doxygen
       - name: Generate Docs
