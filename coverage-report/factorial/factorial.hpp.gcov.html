@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-10-27 17:36:14</td>
+            <td class="headerValue">2025-10-27 18:03:03</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -63,20 +63,16 @@
 <span id="L1"><span class="lineNum">       1</span>              : #pragma once</span>
 <span id="L2"><span class="lineNum">       2</span>              : </span>
 <span id="L3"><span class="lineNum">       3</span>              : namespace TddMath {</span>
-<span id="L4"><span class="lineNum">       4</span> <span class="tlaGNC tlaBgGNC">          74 : unsigned long factorial(unsigned long n) {</span></span>
-<span id="L5"><span class="lineNum">       5</span>              :     /** </span>
-<span id="L6"><span class="lineNum">       6</span>              :         Let's estimate roughly 2^n &lt;= n!</span>
-<span id="L7"><span class="lineNum">       7</span>              :         Then if the value of 2^n causes the return value type to overflow, </span>
-<span id="L8"><span class="lineNum">       8</span>              :         then the factorial will also cause the return value type to overflow. </span>
-<span id="L9"><span class="lineNum">       9</span>              :         It is sufficient to check the bit size (width in bits) of the return value to determine </span>
-<span id="L10"><span class="lineNum">      10</span>              :         whether we expect an overflow or not.</span>
-<span id="L11"><span class="lineNum">      11</span>              :     */</span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">          74 :     if (n &gt;= ULONG_WIDTH) {</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           3 :         throw std::overflow_error(&quot;factorial param more than nitwidth of returning type, so value may be overfloved&quot;);</span></span>
-<span id="L14"><span class="lineNum">      14</span>              :     }</span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">          71 :     return (n == 0) ? 1ul : n * factorial(n - 1);</span></span>
-<span id="L16"><span class="lineNum">      16</span>              : }</span>
-<span id="L17"><span class="lineNum">      17</span>              : };  // namespace TddMath</span>
+<span id="L4"><span class="lineNum">       4</span> <span class="tlaGNC tlaBgGNC">         242 : unsigned long long factorial(unsigned long long n) {</span></span>
+<span id="L5"><span class="lineNum">       5</span> <span class="tlaGNC">         242 :     constexpr unsigned long long kFactorialMaxInputValueBeforeOverflow{21ull};</span></span>
+<span id="L6"><span class="lineNum">       6</span> <span class="tlaGNC">         242 :     if (n &gt;= kFactorialMaxInputValueBeforeOverflow) {</span></span>
+<span id="L7"><span class="lineNum">       7</span>              :         throw std::overflow_error(</span>
+<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC">           4 :             &quot;factorial param more than nitwidth of returning type, so value may be overfloved&quot;);</span></span>
+<span id="L9"><span class="lineNum">       9</span>              :     }</span>
+<span id="L10"><span class="lineNum">      10</span>              : </span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">         238 :     return (n == 0) ? 1ull : n * factorial(n - 1);</span></span>
+<span id="L12"><span class="lineNum">      12</span>              : }</span>
+<span id="L13"><span class="lineNum">      13</span>              : };  // namespace TddMath</span>
         </pre>
               </td>
             </tr>

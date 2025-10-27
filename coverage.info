@@ -18,14 +18,15 @@ LH:9
 end_of_record
 TN:
 SF:/home/prometheus/Рабочий стол/pets/tdd_and_algos/src/factorial/factorial.hpp
-FN:4,16,_ZN7TddMath9factorialEm
-FNDA:74,_ZN7TddMath9factorialEm
+FN:4,12,_ZN7TddMath9factorialEy
+FNDA:242,_ZN7TddMath9factorialEy
 FNF:1
 FNH:1
-DA:4,74
-DA:12,74
-DA:13,3
-DA:15,71
-LF:4
-LH:4
+DA:4,242
+DA:5,242
+DA:6,242
+DA:8,4
+DA:11,238
+LF:5
+LH:5
 end_of_record

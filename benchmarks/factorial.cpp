@@ -9,6 +9,6 @@ static void BM_Factorial(benchmark::State& state) {
     }
 }
 
-BENCHMARK(BM_Factorial)->Arg(10)->Arg(15)->Arg(20)->Arg(30)->Arg(50);
+BENCHMARK(BM_Factorial)->Arg(5)->Arg(10)->Arg(15)->Arg(20);
 
 BENCHMARK_MAIN();
