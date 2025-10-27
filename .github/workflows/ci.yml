@@ -52,11 +52,12 @@ jobs:
       - name: Generate Coverage Report
         run: |
           cd build
-          lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch
-          lcov --ignore-errors unused 
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
-          lcov --remove coverage.info '*/conan/*' --output-file coverage.info || echo "No conan files to exclude"
-          genhtml coverage.info --output-directory coverage-report        
+          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch && \
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused && \
+          lcov --remove coverage.info '*/conan/*' --output-file coverage.info --ignore-errors unused && \
+          lcov --remove coverage.info '*/tests/*' --output-file coverage.info --ignore-errors unused && \
+          lcov --remove coverage.info '*/gtest/*' --output-file coverage.info --ignore-errors unused && \
+          genhtml coverage.info --output-directory coverage-report
           continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
 
       - name: Upload coverage report
