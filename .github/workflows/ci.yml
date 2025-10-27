@@ -16,7 +16,7 @@ jobs:
       - name: Install coverage tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y lcov gcovr
+          sudo apt-get install -y lcov gcovr graphviz
 
       # 2. Установка Conan и CMake
       - name: Setup Conan
@@ -54,10 +54,10 @@ jobs:
           cd build
           lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch
           lcov --remove coverage.info '/usr/*' --output-file coverage.info
-          lcov --remove coverage.info '*/conan/*' --output-file coverage.info   # исключаем внешние библиотеки
-          genhtml coverage.info --output-directory coverage-report
-        continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
-
+          lcov --remove coverage.info '*/conan/*' --output-file coverage.info || echo "No conan files to exclude"
+          genhtml coverage.info --output-directory coverage-report        
+          continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
+          
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
