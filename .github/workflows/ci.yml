@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install coverage tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov gcovr
+
       # 2. Установка Conan и CMake
       - name: Setup Conan
         uses: conan-io/setup-conan@v1
