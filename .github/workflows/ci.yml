@@ -1,0 +1,67 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout код
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Установка Conan и CMake
+      - name: Setup Conan
+        uses: conan-io/setup-conan@v2
+        with:
+          version: latest
+
+      - name: Install CMake
+        uses: lukka/get-cmake@v3
+        with:
+          cmake-version: "3.31.0"
+
+      # 3. Очистка и установка зависимостей
+      - name: Clean & Conan Install
+        run: |
+          rm -rf build
+          mkdir build
+          cd build
+          conan install .. --build=missing --output-folder=.
+
+      # 4. CMake configure + build
+      - name: CMake Configure & Build
+        run: |
+          cd build
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCODE_COVERAGE=ON
+          cmake --build . --parallel
+
+      # 5. Run Tests
+      - name: Run Tests
+        run: cd build && ctest --output-on-failure
+
+      # 6. Coverage
+      - name: Generate Coverage Report
+        run: |
+          cd build
+          lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info
+          lcov --remove coverage.info '*/conan/*' --output-file coverage.info   # исключаем внешние библиотеки
+          genhtml coverage.info --output-directory coverage-report
+        continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
+
+      # 7. Upload coverage artifact (опционально)
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: build/coverage-report
+
+      # 8. Generate Doxygen
+      - name: Generate Docs
+        run: doxygen Doxyfile
+        continue-on-error: true
+
