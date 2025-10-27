@@ -4,7 +4,7 @@ project(tdd-and-algos LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(CODE_COVERAGE "Enable coverage reporting" OFF)
+option(CODE_COVERAGE "Enable coverage reporting" ON)
 
 if(CODE_COVERAGE)
     message(STATUS "Code coverage enabled")

@@ -52,13 +52,13 @@ jobs:
       - name: Generate Coverage Report
         run: |
           cd build
-          lcov --capture --output-file coverage.info --ignore-errors mismatch && \
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused && \
-          lcov --remove coverage.info '*/conan/*' --output-file coverage.info --ignore-errors unused && \
-          lcov --remove coverage.info '*/tests/*' --output-file coverage.info --ignore-errors unused && \
-          lcov --remove coverage.info '*/gtest/*' --output-file coverage.info --ignore-errors unused && \
+          lcov --capture --output-file coverage.info --ignore-errors mismatch
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/conan/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/tests/*' --output-file coverage.info --ignore-errors unused
+          lcov --remove coverage.info '*/gtest/*' --output-file coverage.info --ignore-errors unused
           genhtml coverage.info --output-directory coverage-report
-          continue-on-error: false   # <- workflow упадёт если команда вернёт ошибку
+        continue-on-error: false   # <- теперь на уровне шага
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
