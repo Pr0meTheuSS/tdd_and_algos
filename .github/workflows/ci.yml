@@ -13,11 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install coverage tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lcov gcovr graphviz
-
       # 2. Установка Conan и CMake
       - name: Setup Conan
         uses: conan-io/setup-conan@v1
@@ -47,6 +42,12 @@ jobs:
       # 5. Run Tests
       - name: Run Tests
         run: cd build && ctest --output-on-failure
+
+      - name: Install coverage and docs tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov gcovr graphviz
+          sudo apt-get install -y doxygen graphviz
 
       # 6. Coverage
       - name: Generate Coverage Report
